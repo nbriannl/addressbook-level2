@@ -2,6 +2,8 @@ package seedu.addressbook.commands;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 import org.junit.Before;
@@ -53,6 +55,9 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_emptyAddressBook_returnsPersonNotFoundMessage() {
+        String input = "Y";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
         assertDeletionFailsDueToNoSuchPerson(1, emptyAddressBook, listWithEveryone);
     }
 
@@ -64,6 +69,9 @@ public class DeleteCommandTest {
     @Test
     public void execute_targetPersonNotInAddressBook_returnsPersonNotFoundMessage()
             throws IllegalValueException {
+        String input = "Y";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
         Person notInAddressBookPerson = new Person(new Name("Not In Book"), new Phone("63331444", false),
                 new Email("notin@book.com", false), new Address("156D Grant Road", false), new UniqueTagList());
         List<ReadOnlyPerson> listWithPersonNotInAddressBook = TestUtil.createList(notInAddressBookPerson);
@@ -80,8 +88,19 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_validIndex_personIsDeleted() throws PersonNotFoundException {
+        String input = "Y";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
         assertDeletionSuccessful(1, addressBook, listWithSurnameDoe);
+
+        String input2 = "Y";
+        InputStream in2 = new ByteArrayInputStream(input2.getBytes());
+        System.setIn(in2);
         assertDeletionSuccessful(listWithSurnameDoe.size(), addressBook, listWithSurnameDoe);
+
+        String input3 = "Y";
+        InputStream in3 = new ByteArrayInputStream(input3.getBytes());
+        System.setIn(in3);
 
         int middleIndex = (listWithSurnameDoe.size() / 2) + 1;
         assertDeletionSuccessful(middleIndex, addressBook, listWithSurnameDoe);
