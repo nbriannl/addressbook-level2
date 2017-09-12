@@ -89,7 +89,11 @@ public class TextUi {
     }
 
     /**
-     *
+     * Prompts for the the User to Respond Y(es) or N(o)
+     * and reads the response entered by the user.
+     * Ignores empty, pure whitespace, and comment lines.
+     * Will prompt for correct input on wrong input.
+     * @return true if user has responded Y(es) or false if user has responded N(o)
      */
     public boolean getUserConfirmation() {
         String fullInputLine;
