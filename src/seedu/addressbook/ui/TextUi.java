@@ -8,10 +8,7 @@ import static seedu.addressbook.common.Messages.MESSAGE_WELCOME;
 
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 import seedu.addressbook.commands.CommandResult;
 import seedu.addressbook.data.person.ReadOnlyPerson;
@@ -91,6 +88,31 @@ public class TextUi {
         return fullInputLine;
     }
 
+    /**
+     * Prompts for the the User to Respond Y(es) or N(o)
+     * and reads the response entered by the user.
+     * Ignores empty, pure whitespace, and comment lines.
+     * Will prompt for correct input on wrong input.
+     * @return true if user has responded Y(es) or false if user has responded N(o)
+     */
+    public boolean getUserConfirmation() {
+        String fullInputLine;
+
+        while (true) {
+            out.print(LINE_PREFIX + "Enter Y/N: ");
+            fullInputLine = in.nextLine();
+            // silently consume all ignored lines
+            while (shouldIgnore(fullInputLine)) {
+                fullInputLine = in.nextLine();
+            }
+            if (fullInputLine.trim().equals("Y") || fullInputLine.trim().equals("N")) break;
+            else {
+                showToUser("Invalid Input. Please Enter Y or N");
+            }
+        }
+
+        return fullInputLine.trim().equals("Y");
+    }
 
     public void showWelcomeMessage(String version, String storageFilePath) {
         String storageFileInfo = String.format(MESSAGE_USING_STORAGE_FILE, storageFilePath);

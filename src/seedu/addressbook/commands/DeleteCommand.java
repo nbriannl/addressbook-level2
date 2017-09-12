@@ -3,6 +3,7 @@ package seedu.addressbook.commands;
 import seedu.addressbook.common.Messages;
 import seedu.addressbook.data.person.ReadOnlyPerson;
 import seedu.addressbook.data.person.UniquePersonList.PersonNotFoundException;
+import seedu.addressbook.ui.TextUi;
 
 
 /**
@@ -19,7 +20,6 @@ public class DeleteCommand extends Command {
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
 
-
     public DeleteCommand(int targetVisibleIndex) {
         super(targetVisibleIndex);
     }
@@ -29,9 +29,13 @@ public class DeleteCommand extends Command {
     public CommandResult execute() {
         try {
             final ReadOnlyPerson target = getTargetPerson();
+            ui.showToUser("Deleting " + target.getName() + ". Please Confirm.");
+            boolean hasUserConfirmed = ui.getUserConfirmation();
+            if (!hasUserConfirmed) {
+                return new CommandResult(Messages.MESSAGE_COMMAND_CANCELED);
+            }
             addressBook.removePerson(target);
             return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, target));
-
         } catch (IndexOutOfBoundsException ie) {
             return new CommandResult(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         } catch (PersonNotFoundException pnfe) {
